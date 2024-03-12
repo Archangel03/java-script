@@ -44,7 +44,43 @@ function LI(parag){
 let parag =`HW`;
 LI(parag);
 
-function element3(text,quantity) {
+function createList(text, count) {
+    if (count < 1) {
+        return "";
+    }
 
+    const listItems = [];
+    for (let i = 0; i < count; i++) {
+        listItems.push(`<li>${text}</li>`);
+    }
+
+    return `<ul>${listItems.join("")}</ul>`;
 }
+const list = createList("Hello world!", 3);
+document.write(list);
+
+function create(items) {
+    if (!items.length) {
+        return "";
+    }
+
+    const listItems = items.map(item => `<li>${item}</li>`);
+    return `<ul>${listItems.join("")}</ul>`;
+}
+const numbers = [1, 2, 3, 4, 5];
+const list2 = createList(numbers);
+console.log(numbers);
+
+function findMin(numbers) {
+    let min = numbers[0];
+    for (let i = 1; i < numbers.length; i++) {
+        if (numbers[i] < min) {
+            min = numbers[i];
+        }
+    }
+    return min;
+}
+const numbers1 = [10, 5, 2, 7, 1, 9];
+const minNumber = findMin(numbers1);
+console.log(minNumber);
 
