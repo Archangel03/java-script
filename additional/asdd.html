@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+</head>
+<body>
+<div id="users">
+    <!-- Здесь будут отображаться ссылки на пользователей -->
+</div>
+<div id="user-details">
+    <!-- Тут буде відображатися інформація про користувача -->
+</div>
+<button id="show-posts-btn">Posts of current user</button>
+<div id="user-posts">
+    <!-- Тут будуть відображатися заголовки постів -->
+</div>
+
+<script>
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const userDetailsContainer = document.getElementById('user-details');
+            const showPostsButton = document.getElementById('show-posts-btn');
+            const userPostsContainer = document.getElementById('user-posts');
+
+            // Отримуємо ідентифікатор користувача з URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('id');
+
+            // Функція для відображення заголовків постів поточного користувача
+            function showUserPosts() {
+                fetch(`https://jsonplaceholder.typicode.com/users/${userId}/posts`)
+                    .then(response => response.json())
+                    .then(posts => {
+                        // Очищаємо контейнер з постами
+                        userPostsContainer.innerHTML = '';
+
+                        // Додаємо заголовки постів на сторінку
+                        posts.forEach(post => {
+                            const postTitle = document.createElement('p');
+                            postTitle.textContent = post.title;
+                            userPostsContainer.appendChild(postTitle);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching user posts:', error));
+            }
+
+            // Додаємо обробник події для кліку на кнопку "Posts of current user"
+            showPostsButton.addEventListener('click', showUserPosts);
+
+            // Додаємо інформацію про користувача на сторінку
+            fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+                .then(response => response.json())
+                .then(user => {
+                    userDetailsContainer.innerHTML = `
+                <h2>User Details</h2>
+                <p>ID: ${user.id}</p>
+                <p>Name: ${user.name}</p>
+                <p>Username: ${user.username}</p>
+                <p>Email: ${user.email}</p>
+                <!-- Додайте інші дані про користувача -->
+            `;
+                })
+                .catch(error => console.error('Error fetching user details:', error));
+        });
+
+
+
+
+</script>
+</body>
+</html>

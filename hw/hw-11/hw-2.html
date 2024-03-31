@@ -1,0 +1,36 @@
+<<!DOCUMENT html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+<body>
+<script>
+
+    fetch('https://dummyjson.com/recipes?limit=10')
+        .then(res => {return res.json();})
+        .then(value =>{
+            let {recipes} = value;
+            console.log(recipes)
+
+            for (let recipe of recipes){
+                document.write(` <h1>№ - ${recipe.id} - ${recipe.name}</h1>`)
+                document.write(`<h2> Країна - ${recipe.cuisine}</h2>`)
+                for (let ing of recipe.ingredients){
+                    document.write(`<h3  >${ing}</h3>`)
+                }
+                document.write(`<img style="height: 50vh" src="${recipe.image}">`)
+                for(let instruction of recipe.instructions){
+                    document.write(`<p style="margin: 0">${instruction}</p>`)
+                }
+
+            }
+
+        });
+</script>
+</body>
+</html>

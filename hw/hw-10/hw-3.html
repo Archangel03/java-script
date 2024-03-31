@@ -1,0 +1,62 @@
+<<!DOCUMENT html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="objects-container"></div>
+<button id="prev-button">Назад</button>
+<button id="next-button">Вперед</button>
+
+
+<script>
+    //зробити масив на 100 об'єктів та дві кнопки prev next
+    // при завантажені сторінки з'являються перші 10 об'єктів.
+    //     При натисканні next виводяться настпні 10 об'єктів
+    // При натисканні prev виводяться попередні 10 об'єктів
+
+
+    const objects = Array.from({ length: 100 }, (_, i) => ({
+        id: i + 1,
+
+    }));
+
+    let currentIndex = 0;
+
+    function showObjects(start) {
+        const objectsContainer = document.getElementById("objects-container");
+        objectsContainer.innerHTML = "";
+
+        for (let i = start; i < start + 10; i++) {
+            const objectElement = document.createElement("div");
+            objectElement.innerHTML = JSON.stringify(objects[i], null, 2);
+            objectsContainer.appendChild(objectElement);
+        }
+    }
+
+    showObjects(currentIndex);
+
+    const prevButton = document.getElementById("prev-button");
+    prevButton.addEventListener("click", function () {
+        if (currentIndex > 0) {
+            currentIndex -= 10;
+            showObjects(currentIndex);
+        }
+    });
+
+    const nextButton = document.getElementById("next-button");
+    nextButton.addEventListener("click", function () {
+        if (currentIndex < objects.length - 10) {
+            currentIndex += 10;
+            showObjects(currentIndex);
+        }
+    });
+
+
+</script>
+</body>
+</html>

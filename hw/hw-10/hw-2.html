@@ -1,0 +1,43 @@
+<<!DOCUMENT html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form id="my-form">
+    <input type="text" id="name" name="name" required>
+    <input type="text" id="surname" name="surname" required>
+    <input type="number" id="age" name="age" required>
+    <button type="submit">Створити об'єкт</button>
+</form>
+<div id="object-container"></div>
+<script>
+
+    //Стоврити форму з трьома полями для name,sruname,age та кнопкою. При натисканні на кнопку зчитати данні з полів, та вивести об'єкт в документ. Іншими словами : заповниои форму, натиснули кнопку, під формою з'явився блок з вашим об'єктом
+    const form = document.getElementById("my-form");
+    const objectContainer = document.getElementById("object-container");
+
+    form.addEventListener("submit", function () {
+        event.preventDefault();
+        const name = document.getElementById("name").value;
+        const surname = document.getElementById("surname").value;
+        const age = document.getElementById("age").value;
+
+        const object = {
+            name,
+            surname,
+            age,
+        };
+        objectContainer.innerHTML = "";
+        const objectElement = document.createElement("div");
+        objectElement.innerHTML = JSON.stringify(object, null, 2);
+        objectContainer.appendChild(objectElement);
+    });
+
+</script>
+</body>
+</html>

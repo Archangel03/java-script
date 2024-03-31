@@ -1,0 +1,26 @@
+<<!DOCUMENT html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Є сторінка index.html (назва довільна), при відвідуванні якої в локальне сховще, в масив sessions зберігається інформація про дату та час відвідування сторінки.
+    let sessions = [];
+    let date = new Date();
+    let dateTime = date.toLocaleString();
+
+    sessions.push({
+        dateTime: dateTime
+    });
+
+    localStorage.setItem("sessions", JSON.stringify(sessions));
+
+
+</script>
+</body>
+</html>

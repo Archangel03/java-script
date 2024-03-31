@@ -1,0 +1,43 @@
+<<!DOCUMENT html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+<script>
+
+  fetch('https://dummyjson.com/carts')
+          .then(value => value.json())
+          .then(res => {
+            let {carts} = res;
+            console.log(carts)
+
+            document.write(`<div>`)
+            for(const cart of carts){
+              document.write(`<div>`)
+              document.write(`<p>№ - ${cart.id}</p>`);
+
+              for(const product of cart.products){
+                document.write(`<p>id - ${product.id}.
+                              <br>
+                              title - ${product.title}.
+                              <br>
+                              price - ${product.price}.
+                              <br>
+                              quantity - ${product.quantity}.
+                              <br>
+                              total - ${product.total}
+                                </p>`)
+              }
+
+            }
+          });
+  // .then(console.log);
+</script>
+</body>
+</html>

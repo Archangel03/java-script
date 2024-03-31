@@ -1,0 +1,86 @@
+<<!DOCUMENT html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container {
+            width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid green;
+        }
+        #post-details-container {
+            background: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .comment {
+            width: calc(25% - 20px);
+            margin: 10px;
+            padding: 10px;
+            background: #f0f0f0;
+            box-sizing: border-box;
+            float: left;
+            border: 1px solid green;
+        }
+        .comment p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="post-details-container"></div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const postDetailsContainer = document.getElementById('post-details-container');
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('postId');
+
+        fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+            .then(response => response.json())
+            .then(post => {
+                console.log(post)
+                const postDetailsDiv = document.createElement('div');
+                postDetailsDiv.innerHTML = `
+                <h2>Post Details</h2>
+                <p>User ID: ${post.userId}</p>
+                <p>ID: ${post.id}</p>
+                <p>Title: ${post.title}</p>
+                <p>Body: ${post.body}</p>
+            `;
+                postDetailsContainer.appendChild(postDetailsDiv);
+                fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
+                    .then(response => response.json())
+                    .then(comments => {
+                        const commentsDiv = document.createElement('div');
+                        commentsDiv.innerHTML = '<h3>Comments:</h3>';
+                        comments.forEach(comment => {
+                            const commentElement = document.createElement('div');
+                            commentElement.classList.add('comment');
+                            commentElement.innerHTML = `
+                            <p>Name: ${comment.name}</p>
+                            <p>Email: ${comment.email}</p>
+                            <p>Comment: ${comment.body}</p>
+                        `;
+                            commentsDiv.appendChild(commentElement);
+                        });
+                        postDetailsContainer.appendChild(commentsDiv);
+                    })
+            })
+    });
+</script>
+</body>
+</html>

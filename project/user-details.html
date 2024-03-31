@@ -1,0 +1,134 @@
+<<!DOCUMENT html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid green;
+        }
+        #user-details {
+            background: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #show-posts-btn {
+            display: block;
+            margin: 0 auto;
+            width: 90%;
+            max-width: 400px;
+            padding: 10px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        #user-posts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .post {
+            width: calc(20% - 10px);
+            margin-bottom: 20px;
+            background: #f9f9f9;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid green;
+            margin-top: 10px;
+        }
+        .post p {
+            margin: 5px 0;
+        }
+        .post-details-link {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            text-decoration: none;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <div id="user-details"></div>
+    <button id="show-posts-btn">Posts of current user</button>
+    <div id="user-posts"></div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const userDetailsContainer = document.getElementById('user-details');
+        const showPostsButton = document.getElementById('show-posts-btn');
+        const userPostsContainer = document.getElementById('user-posts');
+
+        function showUserPosts() {
+            fetch(`https://jsonplaceholder.typicode.com/users/${userId}/posts`)
+                .then(response => response.json())
+                .then(posts => {
+                    userPostsContainer.innerHTML = '';
+                    posts.forEach(post => {
+                        const postBlock = document.createElement('div');
+                        postBlock.classList.add('post');
+                        const postTitle = document.createElement('p');
+                        postTitle.textContent = post.title;
+                        postBlock.appendChild(postTitle);
+                        userPostsContainer.appendChild(postBlock);
+                    });
+
+                    const postDetailsLink = document.createElement('a');
+                    postDetailsLink.textContent = 'View Details';
+                    postDetailsLink.href = `post-details.html?postId=${posts[0].id}`;
+                    postDetailsLink.classList.add('post-details-link');
+                    userPostsContainer.appendChild(postDetailsLink);
+                })
+        }
+        showPostsButton.addEventListener('click', showUserPosts);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('id');
+
+        fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+            .then(response => response.json())
+            .then(user => {
+                console.log(user)
+                const userDiv = document.createElement('div');
+                userDiv.innerHTML = `
+                <h2>User Details</h2>
+                <p>ID: ${user.id}</p>
+                <p>Name: ${user.name}</p>
+                <p>Username: ${user.username}</p>
+                <p>Email: ${user.email}</p>
+                <h3>Address:</h3>
+                <p>Street: ${user.address.street}</p>
+                <p>Suite: ${user.address.suite}</p>
+                <p>City: ${user.address.city}</p>
+                <p>Zipcode: ${user.address.zipcode}</p>
+                <p>Geo Location: (${user.address.geo.lat}, ${user.address.geo.lng})</p>
+                <h3>Contact:</h3>
+                <p>Phone: ${user.phone}</p>
+                <p>Website: ${user.website}</p>
+                <h3>Company:</h3>
+                <p>Name: ${user.company.name}</p>
+                <p>Catchphrase: ${user.company.catchPhrase}</p>
+                <p>Business: ${user.company.bs}</p>
+            `;
+                userDetailsContainer.appendChild(userDiv);
+            });
+    });
+</script>
+</body>
+</html>
